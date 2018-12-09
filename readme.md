@@ -177,8 +177,8 @@ En el archivo de migraciones agragamos el campo $table->softDeletes();
 
 
 /** Como usar Soft deleting **/
-
-
+Agregamos en el modelo el uso de SoftDeletes con use Notifiable, SoftDeletes; y 
+luego protected $dates = ['deleted_at'];
 
 
    
