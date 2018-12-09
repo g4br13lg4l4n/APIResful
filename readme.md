@@ -181,4 +181,9 @@ Agregamos en el modelo el uso de SoftDeletes con use Notifiable, SoftDeletes; y
 luego protected $dates = ['deleted_at'];
 
 
+/** Craando un contralador desde linea de comando que use su instancia del modelo **/
+esto nos servirá para hacer lo que hicimos en usuarios de usar User $user pero desde liena de comando, se inyecta la instancia
+gabrielgalanmendez$ php artisan make:controller Category/CategoryController -r -m Category
+
+
    
