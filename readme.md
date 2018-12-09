@@ -185,5 +185,60 @@ luego protected $dates = ['deleted_at'];
 esto nos servirá para hacer lo que hicimos en usuarios de usar User $user pero desde liena de comando, se inyecta la instancia
 gabrielgalanmendez$ php artisan make:controller Category/CategoryController -r -m Category
 
+/** Opereciones complejas para transactionCategory **/
+Para obtener las categorías de una transaccion especifica
+php artisan make:controller Transaction/TransactionCategoryController -r -m Transaction
+ará uso del modelo Transaction, solo usaremos el metodo index
+creamos la ruta para el controlador creado 
+Route::resource('transactions.categories', 'Transaction\TransactionCategoryController', ['only' => ['index']]);
+Lo que queremos es obtener las categrías de una transacción espesifica 
+Lo aremos por la inyección inplicita de modelos 
+class TransactionCategoryController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Transaction $transaction) // inyección inplicita del modelo
+    {
+        //
+    }
+}
+
+Nuestras transacciones no tienen una relación directa con las categorías pero si los productos
+por ello para obtener las categorías primero obtendremos los productos de las transacciones y despues de esto podremos obtener las categorías de estos productos
+
+public function index(Transaction $transaction)
+    {
+        $categories = $transaction->product->categories;
+        return $this->showAll($categories);
+    }
+
+// http://localhost:8000/api/transactions/1/categories esta url nos retornarán las categorías de cada transaccion pedida
+
+
+/** Obtener el vendedor de una transaccion Operaciones complejas **/
+php artisan make:controller Transaction/TransactionSellerController -r
+Solo usaremos el metodo index, porque solo necesitamos mostrar el vendedor de esa transacción
+
+creamos su url para el controlador 
+Route::resource('transactions.sellers', 'Transaction\TransactionSellerController', ['only' => ['index']]);
+accedemos al producto atravez de la transacción y de ahi al seller
+public function index(Transaction $transaction)
+    {
+        $seller = $transaction->product->seller;
+        return $this->showOne($seller);
+    }
+La url para esta operación es http://localhost:8000/api/transactions/2/sellers
+
+
+/** Operaciones complejas con buyer **/
+Obtener la lista de las transacciones de un comprador
+para esto creamos este controlador Buyer/BuyerTransactionController
+php artisan make:controller Buyer/BuyerTransactionController -r -m Buyer
+
+Solo utilizaremos el metodo index
+
 
    
