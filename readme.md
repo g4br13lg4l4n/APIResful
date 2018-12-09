@@ -140,7 +140,7 @@ public function destroy(User $user)
     }
 
 /** Global scope **/
-Los Scope se crean en una carpeta llamada Scope dentro de app
+Los Scope se crean en una carpeta llamada "Scopes" dentro de app
 
 en este caso lo usaremos para poder trater a nuestros buyers, la solución no fue la misma que de usuarios ya que buyer y seller dependen del modelo User y en el caso de buyer este se convierte en buyer al tener una compra por ellos necesitamos de los scope para ahi poder hacer las retricciones 
 creamos el archivo BuyerScope.php dentro de App\Scope
@@ -167,6 +167,18 @@ class Buyer extends User // estos modelos extenderán de User ya que un usuario 
         return $this->hasMany(Transaction::class);
     }
 }
+
+/** Hacemos lo mismo para el modelo seller **/
+
+
+/**  Soft deleting o eliminación suave **/
+Es la practica de agregar una nueva tabla para que este funcione como bandera que un dato se ha eliminado, esta es una fecha
+En el archivo de migraciones agragamos el campo $table->softDeletes(); 
+
+
+/** Como usar Soft deleting **/
+
+
 
 
    

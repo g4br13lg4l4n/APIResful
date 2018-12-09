@@ -89,7 +89,7 @@ class Handler extends ExceptionHandler
             return $this->errorResponse('No se puedo eliminar porque esta relacionado con otra tabla', 409);
          }  
         }
-        if(config('app.debug')) 
+        if(!config('app.debug')) 
         {
             return $this->errorResponse('Falla inisperada, intente luego', 500);
         }
