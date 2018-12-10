@@ -294,4 +294,6 @@ en este caso solo necesitamos los productos así que usaremos la función pluck(
 
 
 
-   
+## Revisar 
+**Tema queues**
+https://code.tutsplus.com/es/tutorials/deferring-tasks-in-laravel-using-queues--cms-29957
