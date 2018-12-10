@@ -38,7 +38,7 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
     }
 
 
-    ## **render en Handle.php**
+    ## render en Handle.php
     si el error que se nos mostrará será por una validación, validamos con exception sea una instancia de ValidationException
     y así usar la función anterior mente sobre escrita (convertValidationExceptionToResponse)
 
