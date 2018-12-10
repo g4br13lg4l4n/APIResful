@@ -239,6 +239,35 @@ para esto creamos este controlador Buyer/BuyerTransactionController
 php artisan make:controller Buyer/BuyerTransactionController -r -m Buyer
 
 Solo utilizaremos el metodo index
+creamos la url a utilizar 
+Route::resource('buyers.transactions', 'Buyer\BuyerTransactionController', ['only' => ['index']]);
+
+public function index(Buyer $buyer)
+    {
+        $transactions = $buyer->transactions;
+        return $this->showAll( $transactions);
+    }
+esta url nos dará las transacciones de un comprador 
+http://localhost:8000/api/buyers/2/transactions
+
+
+/** Todos los productos que un comprador ha obtenido  o  comprado**/
+Esta es una operación un poco mas compleja ya que no hay una relación directa entre comprador y producto
+esta tiene que ser atravéz de transactions 
+al obtener la relación entre compador y transactions tenemos una relación de muchos a muchos y esto a la vez una colección de datos, por eso tedremos que usar el metodo with() para hacer alución que nos traiga la colección de transactions con product y a la ves esta nos retornará una collecctions de datos de transacciones con products
+en este caso solo necesitamos los productos así que usaremos la función pluck() para solo indicarle que de esta colección necesitamos los products
+
+public function index(Buyer $buyer)
+    {
+        $products = $buyer->transactions()->with('product')
+        ->get() 
+        ->pluck('product');
+        return $this->showAll($products);
+    }
+
+
+/** Ontener los vendedores de un comprador **/
+
 
 
    
