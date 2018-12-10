@@ -38,6 +38,8 @@ Route::resource('categories.transactions', 'Category\CategoryTransactionControll
  */
 Route::resource('products', 'Product\ProductController', ['only' => ['index', 'show', 'store']]);
 
+/* Products Firebase */
+Route::resource('productsFirebase', 'Product\ProductFirebaseController', ['except' => ['create', 'edit']]);
 /**
  * Transactions
  */
