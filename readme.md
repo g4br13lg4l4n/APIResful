@@ -129,24 +129,25 @@ if(config('app.debug'))
 ##  Inyección inplicita de modelos 
 La inyección inpicita nos ayuda a reducir código ya que nos permite solo mostrarle el modelo para que este pueda hacer una consulta o metodo desea por ejemplo para buscar un usuario obtenemos el $id y buscamos el usuario 
 
-public function show($id)
+    public function show($id)
     {
         $usuario = User::findOrfail($id);
         return $this->showOne($usuario);
     }
 
 sin enbargo podemos tan solo decirle que modelo es y este sabrá si encuentra el valor o nos manda una excepción
-public function show(User $user) // mostramos el modelo User || inyección de dependencia User
+
+    public function show(User $user) // mostramos el modelo User || inyección de dependencia User
     {
         return $this->showOne($user);
     }
 
 
 Nota debemos de tener consistencia en el nombre de cada parametro para que esto pueda funcionar
-public function destroy(User $user)
+
+    public function destroy(User $user)
     {
         $user->delete();
-
         return $this->showOne($user, 201);
     }
 
