@@ -61,9 +61,11 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
         return parent::render($request, $exception);
     }
 
-  /** Validaciones **/
+  ## Validaciones 
+
   En nuestro archivo Handler obtendremos si el error fue por autentificacion (login) con el metodo AuthenticationException
   cachando el error redirigimos al metodo unauthenticated que lo sobre escribiremos para que el error sea de tipos json 
+
   protected function unauthenticated($request, AuthenticationException $exception)
     {
         return $this->errorResponse(['error' => 'Unauthenticated'], 401);
@@ -71,12 +73,13 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
 
 /**  excepciones por autorización (por si el usuario no tiene permisos a urls) **/
   AuthorizationException nos permite saber un error por autorización
+
   if ($exception instanceof AuthorizationException) // si no tiene autorización en la url
   {
       return $this->errorResponse('No tiene permisos', 403);
   }
 
-/** excepciones por no encontrar la url marcada 404 not found **/
+## excepciones por no encontrar la url marcada 404 not found 
 Para cachar este tipo de error al no encontrar una página en nuestro handler en la función de render
 con NotFoundHttpException podemos saber si es de este tipo de error y dar una respuesta tipo json
 public function render($request, Exception $exception)
@@ -97,10 +100,12 @@ un metodo request no permitido
     }
 
 /** Para poder obtener excepciones mas generales con la funcion HttpException **/
+
 if ($exception instanceof HttpException)
     {
         return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
     }
+
 /** para obtener errores al tratar de eliminar un dato relacionado con otras tablas **/
 if($exception instanceof QueryException) 
   {
@@ -121,19 +126,23 @@ if(config('app.debug'))
   return parent::render($request, $exception);
 
 
-/**  Inyección inplicita de modelos **/
+##  Inyección inplicita de modelos 
 La inyección inpicita nos ayuda a reducir código ya que nos permite solo mostrarle el modelo para que este pueda hacer una consulta o metodo desea por ejemplo para buscar un usuario obtenemos el $id y buscamos el usuario 
+
 public function show($id)
     {
         $usuario = User::findOrfail($id);
         return $this->showOne($usuario);
     }
- sin enbargo podemos tan solo decirle que modelo es y este sabrá si encuentra el valor o nos manda una excepción
+
+sin enbargo podemos tan solo decirle que modelo es y este sabrá si encuentra el valor o nos manda una excepción
 public function show(User $user) // mostramos el modelo User || inyección de dependencia User
     {
         return $this->showOne($user);
     }
-    Nota debemos de tener consistencia en el nombre de cada parametro para que esto pueda funcionar
+
+
+Nota debemos de tener consistencia en el nombre de cada parametro para que esto pueda funcionar
 public function destroy(User $user)
     {
         $user->delete();
@@ -141,11 +150,12 @@ public function destroy(User $user)
         return $this->showOne($user, 201);
     }
 
-/** Global scope **/
+## Global scope 
 Los Scope se crean en una carpeta llamada "Scopes" dentro de app
 
 en este caso lo usaremos para poder trater a nuestros buyers, la solución no fue la misma que de usuarios ya que buyer y seller dependen del modelo User y en el caso de buyer este se convierte en buyer al tener una compra por ellos necesitamos de los scope para ahi poder hacer las retricciones 
 creamos el archivo BuyerScope.php dentro de App\Scope
+
 class BuyerScope implements Scope
 {
   public function apply(Builder $builder, Model $model)  // apply es quien nos inicia nuestro scope, apply modificará la consulta del modelo y agregar el has('transactions') para buyer
@@ -153,8 +163,9 @@ class BuyerScope implements Scope
     $builder->has('transactions');
   }
 }
-Nota: no olvidar de importar todas la librerias 
+** Nota: no olvidar de importar todas la librerias **
 /** Luego de esto debemos decirle al modelos de Buyer que debe de usar este scope **/
+
 class Buyer extends User // estos modelos extenderán de User ya que un usuario puede ser vendedor o cliente
 {
 
@@ -170,10 +181,10 @@ class Buyer extends User // estos modelos extenderán de User ya que un usuario 
     }
 }
 
-/** Hacemos lo mismo para el modelo seller **/
+## Hacemos lo mismo para el modelo seller 
 
 
-/**  Soft deleting o eliminación suave **/
+##  Soft deleting o eliminación suave 
 Es la practica de agregar una nueva tabla para que este funcione como bandera que un dato se ha eliminado, esta es una fecha
 En el archivo de migraciones agragamos el campo $table->softDeletes(); 
 
@@ -192,9 +203,10 @@ Para obtener las categorías de una transaccion especifica
 php artisan make:controller Transaction/TransactionCategoryController -r -m Transaction
 ará uso del modelo Transaction, solo usaremos el metodo index
 creamos la ruta para el controlador creado 
-Route::resource('transactions.categories', 'Transaction\TransactionCategoryController', ['only' => ['index']]);
+* Route::resource('transactions.categories', 'Transaction\TransactionCategoryController', ['only' => ['index']]); 
 Lo que queremos es obtener las categrías de una transacción espesifica 
 Lo aremos por la inyección inplicita de modelos 
+
 class TransactionCategoryController extends Controller
 {
     /**
@@ -220,7 +232,7 @@ public function index(Transaction $transaction)
 // http://localhost:8000/api/transactions/1/categories esta url nos retornarán las categorías de cada transaccion pedida
 
 
-/** Obtener el vendedor de una transaccion Operaciones complejas **/
+* Obtener el vendedor de una transaccion Operaciones complejas 
 php artisan make:controller Transaction/TransactionSellerController -r
 Solo usaremos el metodo index, porque solo necesitamos mostrar el vendedor de esa transacción
 
@@ -235,7 +247,7 @@ public function index(Transaction $transaction)
 La url para esta operación es http://localhost:8000/api/transactions/2/sellers
 
 
-/** Operaciones complejas con buyer **/
+## Operaciones complejas con buyer 
 Obtener la lista de las transacciones de un comprador
 para esto creamos este controlador Buyer/BuyerTransactionController
 php artisan make:controller Buyer/BuyerTransactionController -r -m Buyer
@@ -253,7 +265,7 @@ esta url nos dará las transacciones de un comprador
 http://localhost:8000/api/buyers/2/transactions
 
 
-/** Todos los productos que un comprador ha obtenido  o  comprado**/
+## Todos los productos que un comprador ha obtenido  o  comprado
 Esta es una operación un poco mas compleja ya que no hay una relación directa entre comprador y producto
 esta tiene que ser atravéz de transactions 
 al obtener la relación entre compador y transactions tenemos una relación de muchos a muchos y esto a la vez una colección de datos, por eso tedremos que usar el metodo with() para hacer alución que nos traiga la colección de transactions con product y a la ves esta nos retornará una collecctions de datos de transacciones con products
@@ -266,7 +278,6 @@ public function index(Buyer $buyer)
         ->pluck('product');
         return $this->showAll($products);
     }
-
 
 /** Ontener los vendedores de un comprador **/
 
