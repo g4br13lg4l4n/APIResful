@@ -29,14 +29,16 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
             $request->input()
         )->withErrors($errors);
     }
-    /**  Nos debe de quedar así  **/
+
+    ##Nos debe de quedar así  
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
         $errors = $e->validator->errors()->getMessages();
         return $this->errorResponse($errors, 422); // usamos el metodo errorResponse que tiene ApiResponser, al importarlo podemos usar sus funciones
     }
 
-    /** render en Handle.php **/
+
+    ## **render en Handle.php**
     si el error que se nos mostrará será por una validación, validamos con exception sea una instancia de ValidationException
     y así usar la función anterior mente sobre escrita (convertValidationExceptionToResponse)
 
@@ -49,7 +51,7 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
         return parent::render($request, $exception);
     }
 
-  /** Manejando error por no encontar un usuario o dato en una petición (No query results for model [App\User] 23762) **/
+  ## Manejando error por no encontar un usuario o dato en una petición (No query results for model [App\User] 23762) **/
   Dentro de nuestro render especificamos que por error de no encontar el dato ModelNotFoundException nos envíe un error tipo json
 
   public function render($request, Exception $exception)
