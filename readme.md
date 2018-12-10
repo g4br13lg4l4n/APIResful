@@ -297,3 +297,9 @@ en este caso solo necesitamos los productos así que usaremos la función pluck(
 ## Revisar 
 **Tema queues**
 https://code.tutsplus.com/es/tutorials/deferring-tasks-in-laravel-using-queues--cms-29957
+
+
+## Instalando Firebase 
+**composer require ktamas77/firebase-php dev-master**
+**Nota**
+Necesitamos versión 7.1 para la librería
