@@ -302,4 +302,11 @@ https://code.tutsplus.com/es/tutorials/deferring-tasks-in-laravel-using-queues--
 ## Instalando Firebase 
 **composer require ktamas77/firebase-php dev-master**
 **Nota**
-Necesitamos versión 7.1 para la librería
+    Si tenemos problemas al instalar debemos de actualizar nuestro proyecto con composer update 
+
+En el archivo .env agregamos las credenciales a usar para firebase 
+Configuramos las credenciales de Firebase
+##DEV FIREBASE
+FIREBASE_URL=
+FIREBASE_TOKEN=
+FIREBASE_PATH=
