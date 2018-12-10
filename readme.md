@@ -243,9 +243,10 @@ Solo usaremos el metodo index, porque solo necesitamos mostrar el vendedor de es
 
 creamos su url para el controlador 
 
-Route::resource('transactions.sellers', 'Transaction\TransactionSellerController', ['only' => ['index']]);
+    Route::resource('transactions.sellers', 'Transaction\TransactionSellerController', ['only' => ['index']]);
 
 accedemos al producto atravez de la transacción y de ahi al seller
+
     public function index(Transaction $transaction)
     {
         $seller = $transaction->product->seller;
