@@ -53,7 +53,7 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
   ## Manejando error por no encontar un usuario o dato en una petición (No query results for model [App\User] 23762) 
   Dentro de nuestro render especificamos que por error de no encontar el dato ModelNotFoundException nos envíe un error tipo json
 
-  public function render($request, Exception $exception)
+    public function render($request, Exception $exception)
     {
         if($exception instanceof ModelNotFoundException){
             return $this->errorResponse('No existe instancia con el id especificado', 404);
@@ -66,7 +66,7 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
   En nuestro archivo Handler obtendremos si el error fue por autentificacion (login) con el metodo AuthenticationException
   cachando el error redirigimos al metodo unauthenticated que lo sobre escribiremos para que el error sea de tipos json 
 
-  protected function unauthenticated($request, AuthenticationException $exception)
+    protected function unauthenticated($request, AuthenticationException $exception)
     {
         return $this->errorResponse(['error' => 'Unauthenticated'], 401);
     }
@@ -74,56 +74,58 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
 /**  excepciones por autorización (por si el usuario no tiene permisos a urls) **/
   AuthorizationException nos permite saber un error por autorización
 
-  if ($exception instanceof AuthorizationException) // si no tiene autorización en la url
-  {
-      return $this->errorResponse('No tiene permisos', 403);
-  }
+    if ($exception instanceof AuthorizationException) // si no tiene autorización en la url
+    {
+        return $this->errorResponse('No tiene permisos', 403);
+    }
 
 ## excepciones por no encontrar la url marcada 404 not found 
 Para cachar este tipo de error al no encontrar una página en nuestro handler en la función de render
 con NotFoundHttpException podemos saber si es de este tipo de error y dar una respuesta tipo json
-public function render($request, Exception $exception)
-  {
-    if ($exception instanceof NotFoundHttpException) // si no tiene autorización en la url
+    
+    public function render($request, Exception $exception)
     {
-        return $this->errorResponse('No se encontró la url especificada', 404);
+        if ($exception instanceof NotFoundHttpException) // si no tiene autorización en la url
+        {
+            return $this->errorResponse('No se encontró la url especificada', 404);
+        }
     }
-  }
 
 /**  excepciones por error de metodo si pides por post pero solo permite get  **/
 el metodo no esta permitido MethodNotAllowedHttpException este metodo nos permite saber si hay un error al tratar de ejecutar 
 un metodo request no permitido
 
-  if ($exception instanceof MethodNotAllowedHttpException)
+    if ($exception instanceof MethodNotAllowedHttpException)
     {
         return $this->errorResponse('El metodo especificado en la petición no es vaido', 405);
     }
 
 /** Para poder obtener excepciones mas generales con la funcion HttpException **/
 
-if ($exception instanceof HttpException)
+    if ($exception instanceof HttpException)
     {
         return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
     }
 
 /** para obtener errores al tratar de eliminar un dato relacionado con otras tablas **/
-if($exception instanceof QueryException) 
-  {
-    $codigo = $exception->errorInfo[1]; 
-    if($codigo == 1451){
-      return $this->errorResponse('No se puedo eliminar porque esta relacionado con otra tabla', 409);
-    }  
+
+    if($exception instanceof QueryException) 
+    {
+        $codigo = $exception->errorInfo[1]; 
+        if($codigo == 1451){
+            return $this->errorResponse('No se puedo eliminar porque esta relacionado con otra tabla', 409);
+        }     
   }
 
 /**  Para errores de tipos servidor ejemplo: no se puede conectar a la BD **/
 es importante como desarollador conocer cual fue la falla por eso debenmos conocer si estamos en modo desarrollo o producción
 esto lo conocemos con config('app.debug'), de no ser el caso de estar en desarrollo enviamos un error json al usuario 
 
-if(config('app.debug')) 
-  {
-      return $this->errorResponse('Falla inisperada, intente luego', 500);
-  }
-  return parent::render($request, $exception);
+    if(config('app.debug')) 
+    {
+        return $this->errorResponse('Falla inisperada, intente luego', 500);
+    }
+    return parent::render($request, $exception);
 
 
 ##  Inyección inplicita de modelos 
@@ -157,30 +159,30 @@ Los Scope se crean en una carpeta llamada "Scopes" dentro de app
 en este caso lo usaremos para poder trater a nuestros buyers, la solución no fue la misma que de usuarios ya que buyer y seller dependen del modelo User y en el caso de buyer este se convierte en buyer al tener una compra por ellos necesitamos de los scope para ahi poder hacer las retricciones 
 creamos el archivo BuyerScope.php dentro de App\Scope
 
-class BuyerScope implements Scope
-{
-  public function apply(Builder $builder, Model $model)  // apply es quien nos inicia nuestro scope, apply modificará la consulta del modelo y agregar el has('transactions') para buyer
-  {
-    $builder->has('transactions');
-  }
-}
+    class BuyerScope implements Scope
+    {
+        public function apply(Builder $builder, Model $model)  // apply es quien nos inicia nuestro scope, apply modificará la consulta del modelo y agregar el has('transactions') para buyer
+        {
+            $builder->has('transactions');
+        }
+    }
 ** Nota: no olvidar de importar todas la librerias **
 /** Luego de esto debemos decirle al modelos de Buyer que debe de usar este scope **/
 
-class Buyer extends User // estos modelos extenderán de User ya que un usuario puede ser vendedor o cliente
-{
-
-    protected static function boot() // construir e inicializar el modelo en este caso lo usaremos para indicar que Scope utilizar App\Scope\BuyerScope.php
-    {   
-        parent::boot();
-        static::addGlobalScope(new BuyerScope); // le decimos que Scope usar
-    }
-
-    public function transactions() // retornará la relación de un comprador tiene muchas transacciones
+    class Buyer extends User // estos modelos extenderán de User ya que un usuario puede ser vendedor o cliente
     {
-        return $this->hasMany(Transaction::class);
+
+        protected static function boot() // construir e inicializar el modelo en este caso lo usaremos para indicar que Scope utilizar App\Scope\BuyerScope.php
+        {   
+            parent::boot();
+            static::addGlobalScope(new BuyerScope); // le decimos que Scope usar
+        }
+
+        public function transactions() // retornará la relación de un comprador tiene muchas transacciones
+        {
+            return $this->hasMany(Transaction::class);
+        }
     }
-}
 
 ## Hacemos lo mismo para el modelo seller 
 
@@ -204,27 +206,29 @@ Para obtener las categorías de una transaccion especifica
 php artisan make:controller Transaction/TransactionCategoryController -r -m Transaction
 ará uso del modelo Transaction, solo usaremos el metodo index
 creamos la ruta para el controlador creado 
-* Route::resource('transactions.categories', 'Transaction\TransactionCategoryController', ['only' => ['index']]); 
+
+    Route::resource('transactions.categories', 'Transaction\TransactionCategoryController', ['only' => ['index']]); 
+
 Lo que queremos es obtener las categrías de una transacción espesifica 
 Lo aremos por la inyección inplicita de modelos 
 
-class TransactionCategoryController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Transaction $transaction) // inyección inplicita del modelo
+    class TransactionCategoryController extends Controller
     {
-        //
+        /**
+        * Display a listing of the resource.
+        *
+        * @return \Illuminate\Http\Response
+        */
+        public function index(Transaction $transaction) // inyección inplicita del modelo
+        {
+            //
+        }
     }
-}
 
 Nuestras transacciones no tienen una relación directa con las categorías pero si los productos
 por ello para obtener las categorías primero obtendremos los productos de las transacciones y despues de esto podremos obtener las categorías de estos productos
 
-public function index(Transaction $transaction)
+    public function index(Transaction $transaction)
     {
         $categories = $transaction->product->categories;
         return $this->showAll($categories);
@@ -238,13 +242,16 @@ php artisan make:controller Transaction/TransactionSellerController -r
 Solo usaremos el metodo index, porque solo necesitamos mostrar el vendedor de esa transacción
 
 creamos su url para el controlador 
+
 Route::resource('transactions.sellers', 'Transaction\TransactionSellerController', ['only' => ['index']]);
+
 accedemos al producto atravez de la transacción y de ahi al seller
-public function index(Transaction $transaction)
+    public function index(Transaction $transaction)
     {
         $seller = $transaction->product->seller;
         return $this->showOne($seller);
     }
+
 La url para esta operación es http://localhost:8000/api/transactions/2/sellers
 
 
@@ -255,9 +262,9 @@ php artisan make:controller Buyer/BuyerTransactionController -r -m Buyer
 
 Solo utilizaremos el metodo index
 creamos la url a utilizar 
-Route::resource('buyers.transactions', 'Buyer\BuyerTransactionController', ['only' => ['index']]);
+    Route::resource('buyers.transactions', 'Buyer\BuyerTransactionController', ['only' => ['index']]);
 
-public function index(Buyer $buyer)
+    public function index(Buyer $buyer)
     {
         $transactions = $buyer->transactions;
         return $this->showAll( $transactions);
@@ -272,7 +279,7 @@ esta tiene que ser atravéz de transactions
 al obtener la relación entre compador y transactions tenemos una relación de muchos a muchos y esto a la vez una colección de datos, por eso tedremos que usar el metodo with() para hacer alución que nos traiga la colección de transactions con product y a la ves esta nos retornará una collecctions de datos de transacciones con products
 en este caso solo necesitamos los productos así que usaremos la función pluck() para solo indicarle que de esta colección necesitamos los products
 
-public function index(Buyer $buyer)
+    public function index(Buyer $buyer)
     {
         $products = $buyer->transactions()->with('product')
         ->get() 
