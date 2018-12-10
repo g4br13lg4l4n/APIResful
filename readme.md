@@ -30,16 +30,16 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
         )->withErrors($errors);
     }
 
-    ** Nos debe de quedar así **
+**Nos debe de quedar así**
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
         $errors = $e->validator->errors()->getMessages();
         return $this->errorResponse($errors, 422); // usamos el metodo errorResponse que tiene ApiResponser, al importarlo podemos usar sus funciones
     }
 
-    ** Render en Handle.php **
-    si el error que se nos mostrará será por una validación, validamos con exception sea una instancia de ValidationException
-    y así usar la función anterior mente sobre escrita (convertValidationExceptionToResponse)
+**Render en Handle.php**
+Si el error que se nos mostrará será por una validación, validamos con exception sea una instancia de ValidationException
+    y así usar la función anterior mente sobre escrita ~~(convertValidationExceptionToResponse)~~
 
     public function render($request, Exception $exception)
     {
@@ -71,7 +71,7 @@ Laravel por default cuando encuentra un error en las validaciones retorna a la p
         return $this->errorResponse(['error' => 'Unauthenticated'], 401);
     }
 
-/**  excepciones por autorización (por si el usuario no tiene permisos a urls) **/
+**excepciones por autorización (por si el usuario no tiene permisos a urls)**
   AuthorizationException nos permite saber un error por autorización
 
     if ($exception instanceof AuthorizationException) // si no tiene autorización en la url
@@ -91,7 +91,7 @@ con NotFoundHttpException podemos saber si es de este tipo de error y dar una re
         }
     }
 
-/**  excepciones por error de metodo si pides por post pero solo permite get  **/
+**excepciones por error de metodo si pides por post pero solo permite get**
 el metodo no esta permitido MethodNotAllowedHttpException este metodo nos permite saber si hay un error al tratar de ejecutar 
 un metodo request no permitido
 
@@ -100,14 +100,14 @@ un metodo request no permitido
         return $this->errorResponse('El metodo especificado en la petición no es vaido', 405);
     }
 
-/** Para poder obtener excepciones mas generales con la funcion HttpException **/
+**Para poder obtener excepciones mas generales con la funcion HttpException**
 
     if ($exception instanceof HttpException)
     {
         return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
     }
 
-/** para obtener errores al tratar de eliminar un dato relacionado con otras tablas **/
+**para obtener errores al tratar de eliminar un dato relacionado con otras tablas**
 
     if($exception instanceof QueryException) 
     {
@@ -117,7 +117,7 @@ un metodo request no permitido
         }     
   }
 
-/**  Para errores de tipos servidor ejemplo: no se puede conectar a la BD **/
+**Para errores de tipos servidor ejemplo: no se puede conectar a la BD**
 es importante como desarollador conocer cual fue la falla por eso debenmos conocer si estamos en modo desarrollo o producción
 esto lo conocemos con config('app.debug'), de no ser el caso de estar en desarrollo enviamos un error json al usuario 
 
@@ -166,8 +166,8 @@ creamos el archivo BuyerScope.php dentro de App\Scope
             $builder->has('transactions');
         }
     }
-** Nota: no olvidar de importar todas la librerias **
-/** Luego de esto debemos decirle al modelos de Buyer que debe de usar este scope **/
+**Nota: no olvidar de importar todas la librerias**
+**Luego de esto debemos decirle al modelos de Buyer que debe de usar este scope**
 
     class Buyer extends User // estos modelos extenderán de User ya que un usuario puede ser vendedor o cliente
     {
@@ -192,7 +192,7 @@ Es la practica de agregar una nueva tabla para que este funcione como bandera qu
 En el archivo de migraciones agragamos el campo $table->softDeletes(); 
 
 
-/** Como usar Soft deleting **/
+**Como usar Soft deleting**
 Agregamos en el modelo el uso de SoftDeletes con use Notifiable, SoftDeletes; y 
 luego protected $dates = ['deleted_at'];
 
@@ -201,7 +201,7 @@ luego protected $dates = ['deleted_at'];
 esto nos servirá para hacer lo que hicimos en usuarios de usar User $user pero desde liena de comando, se inyecta la instancia
 gabrielgalanmendez$ php artisan make:controller Category/CategoryController -r -m Category
 
-/** Opereciones complejas para transactionCategory **/
+**Opereciones complejas para transactionCategory**
 Para obtener las categorías de una transaccion especifica
 php artisan make:controller Transaction/TransactionCategoryController -r -m Transaction
 ará uso del modelo Transaction, solo usaremos el metodo index
@@ -237,7 +237,7 @@ por ello para obtener las categorías primero obtendremos los productos de las t
 // http://localhost:8000/api/transactions/1/categories esta url nos retornarán las categorías de cada transaccion pedida
 
 
-* Obtener el vendedor de una transaccion Operaciones complejas 
+**Obtener el vendedor de una transaccion Operaciones complejas**
 php artisan make:controller Transaction/TransactionSellerController -r
 Solo usaremos el metodo index, porque solo necesitamos mostrar el vendedor de esa transacción
 
@@ -287,7 +287,7 @@ en este caso solo necesitamos los productos así que usaremos la función pluck(
         return $this->showAll($products);
     }
 
-/** Ontener los vendedores de un comprador **/
+**Ontener los vendedores de un comprador**
 
 
 
