@@ -264,6 +264,7 @@ para esto creamos este controlador Buyer/BuyerTransactionController
 
 Solo utilizaremos el metodo index
 creamos la url a utilizar 
+
     Route::resource('buyers.transactions', 'Buyer\BuyerTransactionController', ['only' => ['index']]);
 
     public function index(Buyer $buyer)
