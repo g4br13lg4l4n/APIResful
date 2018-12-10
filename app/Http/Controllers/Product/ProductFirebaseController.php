@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Product;
 
 use App\Product;
-use Firebase\FirebaseLib;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 
@@ -16,8 +15,7 @@ class ProductFirebaseController extends ApiController
      */
     public function index()
     {
-        $firebase = new FirebaseLib(env('FIREBASE_URL', 'null'), env('FIREBASE_TOKEN', 'null'));
-        $products = $firebase->get(env('FIREBASE_PATH', 'null').'/products/');
+        $products = $this->ConnectionFirebase()->get(env('FIREBASE_PATH', 'null').'/products/');
         return response()->json(json_decode($products), 200);
     }
 
@@ -29,8 +27,7 @@ class ProductFirebaseController extends ApiController
      */
     public function show($id)
     {
-        $firebase = new FirebaseLib(env('FIREBASE_URL', 'null'), env('FIREBASE_TOKEN', 'null'));
-        $product = $firebase->get(env('FIREBASE_PATH', 'null').'/products/'.$id);
+        $product = $this->ConnectionFirebase()->get(env('FIREBASE_PATH', 'null').'/products/'.$id);
         return response()->json(json_decode($product), 200);
     }
 
@@ -43,8 +40,7 @@ class ProductFirebaseController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        $firebase = new FirebaseLib(env('FIREBASE_URL', 'null'), env('FIREBASE_TOKEN', 'null'));
-        $product = $firebase->update(env('FIREBASE_PATH', 'null').'/products/'.$id, $request->all());
+        $product = $this->ConnectionFirebase()->update(env('FIREBASE_PATH', 'null').'/products/'.$id, $request->all());
         return response()->json(json_decode($product), 200);
     }
 
@@ -56,9 +52,7 @@ class ProductFirebaseController extends ApiController
      */
     public function destroy($id)
     {
-        $firebase = new FirebaseLib(env('FIREBASE_URL', 'null'), env('FIREBASE_TOKEN', 'null'));
-        $product = $firebase->delete(env('FIREBASE_PATH', 'null').'/products/'.$id);
-
+        $product = $this->ConnectionFirebase()->delete(env('FIREBASE_PATH', 'null').'/products/'.$id);
         return response()->json(json_decode($product), 201);
     }
 }
