@@ -2,10 +2,11 @@
 By Gabriel Galán Méndez
 
 ## Notas
-## Illuminate\Foundation\Exceptions\Handler
+### Illuminate\Foundation\Exceptions\Handler
 
 Laravel por default cuando encuentra un error en las validaciones retorna a la página anterior al ser una API no tenémos página anterior de retorno por eso sobrepondremos el metedo siguiente en la carpeta app/Exceptions/Handler.php
-/**
+
+    /**
      * Create a response object from the given validation exception.
      *
      * @param  \Illuminate\Validation\ValidationException  $e
