@@ -259,7 +259,8 @@ La url para esta operación es http://localhost:8000/api/transactions/2/sellers
 ## Operaciones complejas con buyer 
 Obtener la lista de las transacciones de un comprador
 para esto creamos este controlador Buyer/BuyerTransactionController
-php artisan make:controller Buyer/BuyerTransactionController -r -m Buyer
+
+    php artisan make:controller Buyer/BuyerTransactionController -r -m Buyer
 
 Solo utilizaremos el metodo index
 creamos la url a utilizar 
