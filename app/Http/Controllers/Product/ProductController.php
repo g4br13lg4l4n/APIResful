@@ -45,10 +45,8 @@ class ProductController extends ApiController
         if($product){
             // add product to firebase
             try {
-                $firebase = new FirebaseLib(env('FIREBASE_URL', 'null'), env('FIREBASE_TOKEN', 'null'));
-                $firebase->set(env('FIREBASE_PATH', 'null').'/products/'.$product->id, $product);
+                $product = $this->ConnectionFirebase()->set(env('FIREBASE_PATH', 'null').'/products/'.$product->id, $product);
             } catch (Exception $e) {
-                dd($e);
                 Log::info('Error al guardar este usuario en firebase => '. $request->name);
                 Log::info($e);
             }

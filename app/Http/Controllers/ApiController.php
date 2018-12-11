@@ -6,8 +6,8 @@
 namespace App\Http\Controllers;
 
 use App\Traits\ApiResponser; // importamos el Trait
-use App\Traits\FirebaseConnection;
 use Illuminate\Http\Request;
+use App\Traits\FirebaseConnection;
 
 class ApiController extends Controller
 {
