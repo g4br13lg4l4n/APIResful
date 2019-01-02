@@ -36,7 +36,7 @@ class ProductController extends ApiController
             'quantity' => 'required',
         ];
         $this->validate($request, $rules);
-        $request['image'] = '2.jpg';
+        $request['image'] = array_rand(['1.jpg','2.jpg','3.jpg']);
         $request['status'] = Product::PRODUCTO_DISPONIBLE;
         $request['seller_id'] = User::all()->random()->id;
 
@@ -45,7 +45,7 @@ class ProductController extends ApiController
         if($product){
             // add product to firebase
             try {
-                $product = $this->ConnectionFirebase()->set(env('FIREBASE_PATH', 'null').'/products/'.$product->id, $product);
+                $this->ConnectionFirebase()->set(env('FIREBASE_PATH', 'null').'/products/'.$product->id, $product);
             } catch (Exception $e) {
                 Log::info('Error al guardar este usuario en firebase => '. $request->name);
                 Log::info($e);

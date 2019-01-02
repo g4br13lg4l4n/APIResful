@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
-
+use App\Jobs\LogUsers;
 class UserController extends ApiController
 {
     /**
@@ -16,6 +16,8 @@ class UserController extends ApiController
     public function index()
     {
         $usuarios = User::all();
+        dispatch(new LogUsers($usuarios));
+
         return $this->showAll($usuarios);
     }
 
