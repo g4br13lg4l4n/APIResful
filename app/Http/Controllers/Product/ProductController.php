@@ -36,7 +36,9 @@ class ProductController extends ApiController
             'quantity' => 'required',
         ];
         $this->validate($request, $rules);
-        $request['image'] = array_rand(['1.jpg','2.jpg','3.jpg']);
+        $arrayImages = ['1.jpg','2.jpg','3.jpg'];
+        $image = array_rand($arrayImages);
+        $request['image'] = $arrayImages[$image];
         $request['status'] = Product::PRODUCTO_DISPONIBLE;
         $request['seller_id'] = User::all()->random()->id;
 
@@ -62,7 +64,15 @@ class ProductController extends ApiController
      */
     public function show(Product $product)
     {
-        return $this->showOne($product);
+        $productFirebase = $this->ConnectionFirebase()->get(env('FIREBASE_PATH', 'null').'/products/'.$product->id);
+        // know if the product is in firebase or not
+        if($productFirebase == "null") {
+            $product->setAttribute('firebase', 'false'); 
+            return $this->showOne($product);
+        }else{
+            $product->setAttribute('firebase', 'true');
+            return $this->showOne($product);
+        }
     }
 
 }

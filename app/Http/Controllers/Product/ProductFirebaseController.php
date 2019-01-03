@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Product;
 
+use Log;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
