@@ -100,17 +100,22 @@ class LogUsers implements ShouldQueue
 
         /* ****** */
 
+        $head = [
+            'id', 'name', 'email', 'verified', 'admin', 'created_at', 'updated_at', 'age'
+        ];
+
         $options = array('valueInputOption' => 'RAW');
         $allUsers = $users->get()->toArray();
 
         $array = array_flatten($allUsers);
         $sheets = array_chunk($array, 8);
 
+        array_unshift($sheets, $head);
+
         $body = new Google_Service_Sheets_ValueRange(['values' => $sheets]);
 
         $spreadsheetId = $spreadsheet->spreadsheetId;
         $result = $service->spreadsheets_values->update($spreadsheetId, 'A1:I1000000', $body, $options);
-        print_r($result->spreadsheetId);
         print('https://docs.google.com/spreadsheets/d/'.$result->spreadsheetId);
     
     }
