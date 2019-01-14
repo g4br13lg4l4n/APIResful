@@ -85,7 +85,8 @@ class LogUsers implements ShouldQueue
     public function CreateSpreadsheet($client, $users) 
     {
         $service = new Google_Service_Sheets($client);
-        $title = 'users';
+        $title = 'app_users-export-'.Carbon::now('America/Mexico_City')->toW3cString();
+
         $spreadsheet = new Google_Service_Sheets_Spreadsheet([
             'properties' => [
                 'title' => $title
@@ -103,13 +104,14 @@ class LogUsers implements ShouldQueue
         $allUsers = $users->get()->toArray();
 
         $array = array_flatten($allUsers);
-        $sheets = array_chunk($array, 7);
+        $sheets = array_chunk($array, 8);
 
         $body = new Google_Service_Sheets_ValueRange(['values' => $sheets]);
 
         $spreadsheetId = $spreadsheet->spreadsheetId;
         $result = $service->spreadsheets_values->update($spreadsheetId, 'A1:I1000000', $body, $options);
-        print($result->updatedRange. PHP_EOL);
+        print_r($result->spreadsheetId);
+        print('https://docs.google.com/spreadsheets/d/'.$result->spreadsheetId);
     
     }
 }
