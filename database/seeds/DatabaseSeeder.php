@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
         Category::flushEventListeners();
         Product::flushEventListeners();
         Transaction::flushEventListeners();
-        $cantidadUsuarios = 1000;
-        $cantidadCategorias = 30;
-        $cantidadProductos = 1000;
-        $cantidadTransacciones = 1000;
+        $cantidadUsuarios = 10;
+        $cantidadCategorias = 5;
+        $cantidadProductos = 20;
+        $cantidadTransacciones = 10;
         factory(User::class, $cantidadUsuarios)->create();
         factory(Category::class, $cantidadCategorias)->create();
 		factory(Product::class, $cantidadTransacciones)->create()->each(

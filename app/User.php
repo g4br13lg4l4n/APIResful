@@ -31,7 +31,7 @@ class User extends Authenticatable
         'password',
         'verified',
         'verification_token',
-        'admin'
+        'admin',
     ];
 
     public function setNameAttribute($valor) // Mutador, nos ayuda a modificar los valores que se agregan a la BD por ejemplo poner la cadena name en minusculas
@@ -55,6 +55,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
+        'deleted_at',
+        'age',
         'password', 
         'remember_token',
         'verification_token'
