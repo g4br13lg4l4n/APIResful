@@ -180,7 +180,6 @@ return [
         /**
          * Connections to Google Cloud Storage
          */
-        Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
     ],
 
     /*

@@ -7,10 +7,7 @@ use Storage;
 use App\User;
 use Carbon\Carbon;
 use Google_Client;
-use GuzzleHttp\Client;
 use Google_Service_Sheets;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Handler\CurlHandler;
 use Psr\Http\Message\RequestInterface;
 use Google_Service_Sheets_Spreadsheet;
 use Google_Service_Sheets_ValueRange;
@@ -78,7 +75,7 @@ class LogUsers implements ShouldQueue
             }
             file_put_contents($tokenPath, json_encode($client->getAccessToken()));
         }
-        $this->CreateSpreadsheet($client, $users);   
+        return $this->CreateSpreadsheet($client, $users);   
     }   
 
 
@@ -116,7 +113,9 @@ class LogUsers implements ShouldQueue
 
         $spreadsheetId = $spreadsheet->spreadsheetId;
         $result = $service->spreadsheets_values->update($spreadsheetId, 'A1:I1000000', $body, $options);
-        print('https://docs.google.com/spreadsheets/d/'.$result->spreadsheetId);
-    
+        $url = 'https://docs.google.com/spreadsheets/d/'.$result->spreadsheetId;
+        print($url);
+        return $url;
+        
     }
 }

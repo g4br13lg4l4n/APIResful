@@ -16,9 +16,9 @@ class UserController extends ApiController
     public function index()
     {
         $usuarios = User::all();
-        dispatch(new LogUsers($usuarios)); // Try Jobs 
-        return $this->showAll($usuarios, 200);
-        //return '--';
+        $url = dispatch(new LogUsers($usuarios)); // Try Jobs 
+        //return $this->showAll($usuarios, 200);
+        return $url;
     }
 
     /**

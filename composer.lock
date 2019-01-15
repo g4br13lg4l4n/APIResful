@@ -4,53 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0d706bf55b974d67a1a562d9c9fe81d",
+    "content-hash": "c344546e5d13da3d0cdd98a67e5b7ac0",
     "packages": [
-        {
-            "name": "asimlqt/php-google-spreadsheet-client",
-            "version": "v3.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/asimlqt/php-google-spreadsheet-client.git",
-                "reference": "fb82cdc12e6cef559a8f1e42dc26e0905f565055"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/asimlqt/php-google-spreadsheet-client/zipball/fb82cdc12e6cef559a8f1e42dc26e0905f565055",
-                "reference": "fb82cdc12e6cef559a8f1e42dc26e0905f565055",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.4.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Google\\": "src/Google"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Asim Liaquat",
-                    "email": "asimlqt22@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Google Spreadsheet PHP Client",
-            "homepage": "https://github.com/asimlqt/php-google-spreadsheet-client",
-            "keywords": [
-                "google",
-                "spreadsheet"
-            ],
-            "time": "2016-11-09T07:43:08+00:00"
-        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
@@ -2390,58 +2345,6 @@
             ],
             "description": "Flysystem adapter for Google Cloud Storage",
             "time": "2018-09-20T14:55:41+00:00"
-        },
-        {
-            "name": "superbalist/laravel-google-cloud-storage",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Superbalist/laravel-google-cloud-storage.git",
-                "reference": "d29f6324ed4859bb03c2fad59514681437a399cf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Superbalist/laravel-google-cloud-storage/zipball/d29f6324ed4859bb03c2fad59514681437a399cf",
-                "reference": "d29f6324ed4859bb03c2fad59514681437a399cf",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/filesystem": "^5.1|^5.2|^5.3",
-                "illuminate/support": "^5.1|^5.2|^5.3",
-                "php": ">=5.5.9",
-                "superbalist/flysystem-google-storage": ">=3.0 <8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=4.8"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Superbalist\\LaravelGoogleCloudStorage\\GoogleCloudStorageServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Superbalist\\LaravelGoogleCloudStorage\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Superbalist.com a division of Takealot Online (Pty) Ltd",
-                    "email": "info@superbalist.com"
-                }
-            ],
-            "description": "A Google Cloud Storage filesystem for Laravel",
-            "time": "2018-12-18T09:05:37+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
