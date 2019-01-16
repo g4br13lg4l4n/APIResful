@@ -18,7 +18,7 @@ class UserController extends ApiController
         $usuarios = User::all();
         $url = dispatch(new LogUsers($usuarios)); // Try Jobs 
         //return $this->showAll($usuarios, 200);
-        return $url;
+        return '--';
     }
 
     /**
